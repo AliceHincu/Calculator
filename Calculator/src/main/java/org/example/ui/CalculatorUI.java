@@ -64,8 +64,7 @@ public class CalculatorUI {
                 Welcome! Please Enter your mathematical expression. Be aware that to exit you can just press 0. To show history of results and expressions just type "history"\s
                 """ + commandsText + """                
                 \n* Rules:
-                \t 1. For unary operations you need to put them in brackets (ex: 5+(-9))
-                \t 2. For imaginary numbers, if you only want i, you need to put it as 1i.
+                \t 1. For unary signs, you need to put them in brackets (ex: 5+(-9))
                *  Available operations: +,-,*,/,min,max,sqrt""");
     }
 }

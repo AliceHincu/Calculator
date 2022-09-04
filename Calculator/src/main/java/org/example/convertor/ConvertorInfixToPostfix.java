@@ -1,5 +1,7 @@
 package org.example.convertor;
 
+import org.example.domain.ComplexNumber;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -85,7 +87,7 @@ public class ConvertorInfixToPostfix {
      * @param element - current math element from expression (symbol or number)
      */
     private void processNumber(String element) {
-        if (Pattern.compile("\\d").matcher(element).find()) {
+        if (Pattern.compile("\\d").matcher(element).find() || element.equals(ComplexNumber.IMAGINARY_UNIT)) {
             queue.add(element);
         }
     }

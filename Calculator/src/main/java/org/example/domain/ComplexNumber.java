@@ -3,7 +3,7 @@ package org.example.domain;
 import java.util.Objects;
 
 public class ComplexNumber {
-    private static final String IMAGINARY_UNIT = "i";
+    public static final String IMAGINARY_UNIT = "i";
     private static final double ZERO = 0.0;
     private Double real;
     private Double imaginary;
@@ -17,7 +17,7 @@ public class ComplexNumber {
         char lastChar = number.charAt(number.length() - 1);
         if (lastChar == 'i') {
             this.real = 0.0;
-            this.imaginary = Double.parseDouble(number.substring(0, number.length() - 1));
+            this.imaginary = number.equals(ComplexNumber.IMAGINARY_UNIT) ? 1.0 : Double.parseDouble(number.substring(0, number.length() - 1));
         } else {
             this.real = Double.parseDouble(number);
             this.imaginary = 0.0;

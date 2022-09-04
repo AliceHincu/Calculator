@@ -1,5 +1,6 @@
 package org.example.convertor;
 
+import org.example.domain.ComplexNumber;
 import org.example.operations.BinaryOperatorEnum;
 import org.example.operations.UnaryOperatorEnum;
 
@@ -14,7 +15,7 @@ public class ConvertorExpressionToList {
 
     public ConvertorExpressionToList() {
         String operatorsRegex = buildOperatorsRegex();
-        String operandsRegex = "(\\d+(\\.\\d+)?i?)";
+        String operandsRegex = "(\\d+(\\.\\d+)?" + ComplexNumber.IMAGINARY_UNIT + "?)";
         this.expressionSplitRegex = operandsRegex + "|" + operatorsRegex;
     }
 
@@ -63,7 +64,7 @@ public class ConvertorExpressionToList {
                 .stream(UnaryOperatorEnum.values())
                 .map(UnaryOperatorEnum::getRegex)
                 .toList();
-        List<String> extraStuff = new ArrayList<>(Arrays.asList("\\(", "\\)", ","));
+        List<String> extraStuff = new ArrayList<>(Arrays.asList("\\(", "\\)", ",", ComplexNumber.IMAGINARY_UNIT));
 
         List<String> operations = new ArrayList<>();
         operations.addAll(binaryOp);

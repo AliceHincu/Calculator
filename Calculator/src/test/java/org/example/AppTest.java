@@ -12,15 +12,13 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
+public class AppTest {
     /**
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    public void shouldAnswerWithTrue() {
+        assertTrue(true);
     }
 
 //    @Test(expected = IllegalArgumentException.class)
@@ -43,8 +41,8 @@ public class AppTest
     public void subtractionTests() {
         CalculatorService calculatorService = new CalculatorService();
         assertThat(calculatorService.evaluateRPN("(-9)-5"), is(new ComplexNumber(-14.0, 0.0)));
-            assertThat(calculatorService.evaluateRPN("(-9i)-5"), is(new ComplexNumber(-5.0, -9.0)));
-            assertThat(calculatorService.evaluateRPN("-9-5"), is(new ComplexNumber(-14.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("(-9i)-5"), is(new ComplexNumber(-5.0, -9.0)));
+        assertThat(calculatorService.evaluateRPN("-9-5"), is(new ComplexNumber(-14.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("-9i-5"), is(new ComplexNumber(-5.0, -9.0)));
         assertThat(calculatorService.evaluateRPN("6-7-8"), is(new ComplexNumber(-9.0, 0.0)));
     }
@@ -100,6 +98,7 @@ public class AppTest
         assertThat(calculatorService.evaluateRPN("1+min(2,3)"), is(new ComplexNumber(3.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("1+2*min(2,3)"), is(new ComplexNumber(5.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("min((1+1i),(2+1i))"), is(new ComplexNumber(1.0, 1.0)));
+        assertThat(calculatorService.evaluateRPN("min(1+i,2+i)"), is(new ComplexNumber(1.0, 1.0)));
         assertThat(calculatorService.evaluateRPN("min(10/2,10/5)"), is(new ComplexNumber(2.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("min(10,100)/min(5,60)"), is(new ComplexNumber(2.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("min(0 + max(4, 4), 5)"), is(new ComplexNumber(4.0, 0.0)));
