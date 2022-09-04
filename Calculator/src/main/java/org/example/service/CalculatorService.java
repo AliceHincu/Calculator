@@ -23,20 +23,24 @@ public class CalculatorService {
      * @param mathematicalExpression - input from user
      * @return - the result of the mathematical expression
      */
-    public ComplexNumber evaluateRPN(String mathematicalExpression){
+    public ComplexNumber evaluateRPN(String mathematicalExpression) {
         List<String> list = this.regexConvertor.convert(mathematicalExpression);
         Queue<String> queue = this.expressionConvertor.convert(list);
 
         Deque<ComplexNumber> numStack = new LinkedList<>();
+        ComplexNumber first;
+        ComplexNumber second;
 
         while (!queue.isEmpty()) {
             final String token = queue.poll();
 
             if (UnaryOperatorEnum.isOfType(token)) {
-                // TODO: numstack pop here and in calculate just calculate - viktor.
-                numStack.push(UnaryOperatorEnum.calculateExpression(token, numStack));
+                first = numStack.pop();
+                numStack.push(UnaryOperatorEnum.calculateExpression(token, first));
             } else if (BinaryOperatorEnum.isOfType(token)) {
-                numStack.push(BinaryOperatorEnum.calculateExpression(token, numStack));
+                second = numStack.pop();
+                first = numStack.pop();
+                numStack.push(BinaryOperatorEnum.calculateExpression(token, first, second));
             } else {
                 numStack.push(new ComplexNumber(token));
             }

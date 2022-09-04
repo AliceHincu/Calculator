@@ -16,8 +16,8 @@ public enum BinaryOperatorEnum {
 
     private final String sign;
     private final BinaryOperator<ComplexNumber> operation;
-
     private final String regex;
+
     BinaryOperatorEnum(String sign, BinaryOperator<ComplexNumber> operation, String regex) {
         this.sign = sign;
         this.operation = operation;
@@ -42,17 +42,8 @@ public enum BinaryOperatorEnum {
                 .findFirst().map(BinaryOperatorEnum::getOperation).orElse(null);
     }
 
-    public static ComplexNumber calculateExpression(String token, Deque<ComplexNumber> numStack) {
-        ComplexNumber first;
-        ComplexNumber second;
-        ComplexNumber result;
-
-        BinaryOperator<ComplexNumber> function = getFunctionBySign(token);
-        second = numStack.pop();
-        first = numStack.pop();
-        result = function.apply(first, second);
-
-        return result;
+    public static ComplexNumber calculateExpression(String token, ComplexNumber first, ComplexNumber second) {
+        return getFunctionBySign(token).apply(first, second);
     }
 
     public static boolean isOfType(String token) {

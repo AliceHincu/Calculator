@@ -36,16 +36,8 @@ public enum UnaryOperatorEnum {
                 .findFirst().map(UnaryOperatorEnum::getOperation).orElse(null);
     }
 
-    public static ComplexNumber calculateExpression(String token, Deque<ComplexNumber> numStack) {
-        ComplexNumber first;
-        ComplexNumber result;
-
-        UnaryOperator<ComplexNumber> function = getFunctionBySign(token);
-        first = numStack.pop();
-        result = function.apply(first);
-
-        return result;
-
+    public static ComplexNumber calculateExpression(String token, ComplexNumber number) {
+        return getFunctionBySign(token).apply(number);
     }
 
     public static boolean isOfType(String token) {

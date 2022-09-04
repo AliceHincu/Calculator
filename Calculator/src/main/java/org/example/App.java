@@ -12,7 +12,6 @@ public class App {
 
         //TODO: optional: check brackets + invalid symbols like a,b,c...
         //TODO: to work with i instead of 1i
-        //TODO: replace new Complex(...) with just strings like "2+i" in test
         // test that don't work: min(4 + 5 + 9 / 3 - 3 - 5 - 4 + max(4, min(4, 6)), 5)
     }
 }
