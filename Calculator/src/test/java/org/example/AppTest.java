@@ -102,6 +102,8 @@ public class AppTest
         assertThat(calculatorService.evaluateRPN("min((1+1i),(2+1i))"), is(new ComplexNumber(1.0, 1.0)));
         assertThat(calculatorService.evaluateRPN("min(10/2,10/5)"), is(new ComplexNumber(2.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("min(10,100)/min(5,60)"), is(new ComplexNumber(2.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("min(0 + max(4, 4), 5)"), is(new ComplexNumber(4.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("min(4 + 5 + 9 / 3 - 3 - 5 - 4 + max(4, min(4, 6)), 5)"), is(new ComplexNumber(4.0, 0.0)));
     }
 
     @Test
