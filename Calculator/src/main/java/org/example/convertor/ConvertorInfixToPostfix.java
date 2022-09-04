@@ -1,20 +1,13 @@
 package org.example.convertor;
 
+import org.example.operations.MathSymbol;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static org.example.operations.MathSymbol.*;
+
 public class ConvertorInfixToPostfix {
-    private static final String ZERO = "0";
-    private static final String COMMA = ",";
-    private static final String MAX = "max";
-    private static final String MIN = "min";
-    private static final String SQRT = "sqrt";
-    private static final String PLUS = "+";
-    private static final String MINUS = "-";
-    private static final String LEFT_BRACKET = "(";
-    private static final String RIGHT_BRACKET = ")";
-
-
     /**
      * Elements in the queue are now set up in Reverse-Polish notation (RPN)
      * So "2*(5+5*2)/3+(6/2+8)" is now "2 5 5 2 * + * 3 / 6 2 / 8 + +"
@@ -29,14 +22,14 @@ public class ConvertorInfixToPostfix {
 
         boolean checkUnary = true;
 
-        for(String element: mathematicalExpressionElements) {
-            if (Objects.equals(element, COMMA)) {
+        for (String element : mathematicalExpressionElements) {
+            if (Objects.equals(element, COMMA.getSymbol())) {
                 processComma(queue, stack);
                 checkUnary = true;
                 continue;
             }
 
-            if (Arrays.asList(MAX, MIN, SQRT).contains(element)) {
+            if (Arrays.asList(MAX.getSymbol(), MIN.getSymbol(), SQRT.getSymbol()).contains(element)) {
                 stack.push(element);
                 continue;
             }
@@ -44,8 +37,8 @@ public class ConvertorInfixToPostfix {
             // Check if you have a unary minus or plus
             if (checkUnary) {
                 checkUnary = false;
-                if (Arrays.asList(PLUS, MINUS).contains(element)) //instead of (-9) it will be (0-9)
-                    queue.add(ZERO);
+                if (Arrays.asList(PLUS.getSymbol(), MINUS.getSymbol()).contains(element)) //instead of (-9) it will be (0-9)
+                    queue.add(ZERO.getSymbol());
             }
 
             if (Pattern.compile("\\d").matcher(element).find()) { // if is number
@@ -53,14 +46,14 @@ public class ConvertorInfixToPostfix {
                 continue;
             }
 
-            if (element.equals(LEFT_BRACKET)) {
+            if (element.equals(LEFT_BRACKET.getSymbol())) {
                 checkUnary = true;
                 stack.push(element); // conversion from char to string
                 continue;
             }
 
-            if (element.equals(RIGHT_BRACKET)) {
-                while (!Objects.equals(stack.peek(), LEFT_BRACKET)) {
+            if (element.equals(RIGHT_BRACKET.getSymbol())) {
+                while (!Objects.equals(stack.peek(), LEFT_BRACKET.getSymbol())) {
                     queue.add(String.valueOf(stack.pop()));
                 }
 
@@ -69,8 +62,8 @@ public class ConvertorInfixToPostfix {
             }
 
             // if it is one of the basic operations (+,-,*,/)
-            while (!stack.isEmpty() && !Objects.equals(stack.peek(), LEFT_BRACKET)
-                    && getPrecedence(element) <= getPrecedence(stack.peek())) {
+            while (!stack.isEmpty() && !Objects.equals(stack.peek(), LEFT_BRACKET.getSymbol())
+                    && getPrecedence(element) >= getPrecedence(stack.peek())) {
                 queue.add(String.valueOf(stack.pop()));
             }
 
@@ -92,9 +85,9 @@ public class ConvertorInfixToPostfix {
      * @param stack - temporary stack used for operations which are not in the queue yet
      */
     private void processComma(Queue<String> queue, Deque<String> stack) {
-        if (!Objects.equals(stack.peek(), LEFT_BRACKET)) {
+        if (!Objects.equals(stack.peek(), LEFT_BRACKET.getSymbol())) {
             String op = stack.pop();
-            while (!stack.isEmpty() && !Objects.equals(stack.peek(), LEFT_BRACKET) && getPrecedence(op) <= getPrecedence(stack.peek())) {
+            while (!stack.isEmpty() && !Objects.equals(stack.peek(), LEFT_BRACKET.getSymbol()) && getPrecedence(op) >= getPrecedence(stack.peek())) {
                 queue.add(op);
                 op = String.valueOf(stack.pop());
             }
@@ -103,15 +96,16 @@ public class ConvertorInfixToPostfix {
         }
     }
 
-    // Operator precedence - PEMDAS rule. All 4 have same left-associativity.
     private int getPrecedence(String c) {
-        if (Objects.equals(c, "sqrt"))
-            return 4;
-        if (Objects.equals(c, "max") || Objects.equals(c, "min"))
-            return 3;
-        if (Objects.equals(c, "*") || Objects.equals(c, "/"))
-            return 2;
-        else // '+' or '-'
-            return 1;
+//        if (Objects.equals(c, SQRT.getSymbol()))
+//            return 4;
+//        if (Objects.equals(c, MAX.getSymbol()) || Objects.equals(c, MIN.getSymbol()))
+//            return 3;
+//        if (Objects.equals(c, MULTIPLY.getSymbol()) || Objects.equals(c, DIVIDE.getSymbol()))
+//            return 2;
+//        else // '+' or '-'
+//            return 1;
+        Optional<MathSymbol> op = Arrays.stream(values()).filter(mathSymbol -> mathSymbol.getSymbol().equals(c)).findFirst();
+        return op.map(MathSymbol::getPrecedence).orElse(0);
     }
 }

@@ -43,8 +43,8 @@ public class AppTest
     public void subtractionTests() {
         CalculatorService calculatorService = new CalculatorService();
         assertThat(calculatorService.evaluateRPN("(-9)-5"), is(new ComplexNumber(-14.0, 0.0)));
-        assertThat(calculatorService.evaluateRPN("(-9i)-5"), is(new ComplexNumber(-5.0, -9.0)));
-        assertThat(calculatorService.evaluateRPN("-9-5"), is(new ComplexNumber(-14.0, 0.0)));
+            assertThat(calculatorService.evaluateRPN("(-9i)-5"), is(new ComplexNumber(-5.0, -9.0)));
+            assertThat(calculatorService.evaluateRPN("-9-5"), is(new ComplexNumber(-14.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("-9i-5"), is(new ComplexNumber(-5.0, -9.0)));
         assertThat(calculatorService.evaluateRPN("6-7-8"), is(new ComplexNumber(-9.0, 0.0)));
     }
