@@ -30,6 +30,13 @@ public enum UnaryOperatorEnum {
         return regex;
     }
 
+    /**
+     * Return a function from Calculations class that needs to be applied on the complex numbers
+     * The function is determined by the sign used on the complex number
+     *
+     * @param text the sign (sqrt, ln...)
+     * @return binary function associated with the given sign
+     */
     private static UnaryOperator<ComplexNumber> getFunctionBySign(String text) {
         return Arrays.stream(values())
                 .filter(op -> op.getSign().equalsIgnoreCase(text))
