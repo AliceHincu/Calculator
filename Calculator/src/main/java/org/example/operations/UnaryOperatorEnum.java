@@ -3,11 +3,12 @@ package org.example.operations;
 import org.example.domain.ComplexNumber;
 
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.function.UnaryOperator;
 
 public enum UnaryOperatorEnum {
-    SQRT("sqrt", Calculations::calculateSquareRoot, "sqrt");
+    SQRT("sqrt", Calculations::calculateSquareRoot, "sqrt"),
+    LN("ln", Calculations::calculateNaturalLogarithm, "ln"),
+    EXP("exp", Calculations::calculateExponential, "exp");
 
     private final String sign;
     private final UnaryOperator<ComplexNumber> operation;
@@ -26,10 +27,18 @@ public enum UnaryOperatorEnum {
     public UnaryOperator<ComplexNumber> getOperation() {
         return operation;
     }
+
     public String getRegex() {
         return regex;
     }
 
+    /**
+     * Return a function from Calculations class that needs to be applied on the complex numbers
+     * The function is determined by the sign used on the complex number
+     *
+     * @param text the sign (sqrt, ln...)
+     * @return binary function associated with the given sign
+     */
     private static UnaryOperator<ComplexNumber> getFunctionBySign(String text) {
         return Arrays.stream(values())
                 .filter(op -> op.getSign().equalsIgnoreCase(text))

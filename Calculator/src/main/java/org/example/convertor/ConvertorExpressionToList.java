@@ -1,5 +1,6 @@
 package org.example.convertor;
 
+import org.example.domain.ComplexNumber;
 import org.example.operations.BinaryOperatorEnum;
 import org.example.operations.UnaryOperatorEnum;
 
@@ -14,15 +15,16 @@ public class ConvertorExpressionToList {
 
     public ConvertorExpressionToList() {
         String operatorsRegex = buildOperatorsRegex();
-        String operandsRegex = "(\\d+(\\.\\d+)?i?)";
+        String operandsRegex = "(\\d+(\\.\\d+)?" + ComplexNumber.IMAGINARY_UNIT + "?)";
         this.expressionSplitRegex = operandsRegex + "|" + operatorsRegex;
     }
 
     /**
      * Convert the expression given by the user to a list of operations and operands.
      * Example :
-     *      - before: "1 + 3.2 - 4i - min(-4, 6.5i + 9) / 6"
-     *      - after: [1, +, 3.2, -, 4i, -, min, (, -, 4, ,, 6.5i, +, 9, ), /, 6]
+     * - before: "1 + 3.2 - 4i - min(-4, 6.5i + 9) / 6"
+     * - after: [1, +, 3.2, -, 4i, -, min, (, -, 4, ,, 6.5i, +, 9, ), /, 6]
+     *
      * @param expression: mathematical expression string given by the user
      * @return - the list with all operators and operands of the given expression
      */
@@ -63,7 +65,7 @@ public class ConvertorExpressionToList {
                 .stream(UnaryOperatorEnum.values())
                 .map(UnaryOperatorEnum::getRegex)
                 .toList();
-        List<String> extraStuff = new ArrayList<>(Arrays.asList("\\(", "\\)", ","));
+        List<String> extraStuff = new ArrayList<>(Arrays.asList("\\(", "\\)", ",", ComplexNumber.IMAGINARY_UNIT));
 
         List<String> operations = new ArrayList<>();
         operations.addAll(binaryOp);
