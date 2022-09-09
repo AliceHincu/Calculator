@@ -22,8 +22,9 @@ public class ConvertorExpressionToList {
     /**
      * Convert the expression given by the user to a list of operations and operands.
      * Example :
-     *      - before: "1 + 3.2 - 4i - min(-4, 6.5i + 9) / 6"
-     *      - after: [1, +, 3.2, -, 4i, -, min, (, -, 4, ,, 6.5i, +, 9, ), /, 6]
+     * - before: "1 + 3.2 - 4i - min(-4, 6.5i + 9) / 6"
+     * - after: [1, +, 3.2, -, 4i, -, min, (, -, 4, ,, 6.5i, +, 9, ), /, 6]
+     *
      * @param expression: mathematical expression string given by the user
      * @return - the list with all operators and operands of the given expression
      */

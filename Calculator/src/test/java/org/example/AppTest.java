@@ -1,7 +1,6 @@
 package org.example;
 
 import static org.hamcrest.CoreMatchers.is;
-//import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -152,9 +151,7 @@ public class AppTest {
     @Test
     public void testValidatorException() {
         Validator validator = new Validator();
-        ValidatorException exception = assertThrows(ValidatorException.class, () -> {
-            validator.validate("4+(3+5");
-        });
+        ValidatorException exception = assertThrows(ValidatorException.class, () -> validator.validate("4+(3+5"));
 
         String expectedMessage = "Please check parentheses again!";
         String actualMessage = exception.getMessage();

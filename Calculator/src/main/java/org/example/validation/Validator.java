@@ -8,8 +8,8 @@ public class Validator extends Throwable {
     }
 
     public void validate(String mathematicalExpression) throws ValidatorException {
-        if(!this.validatorBrackets.areBracketsBalanced(mathematicalExpression)) {
-            if(mathematicalExpression.contains(")") || mathematicalExpression.contains("(")) {
+        if (!this.validatorBrackets.areBracketsBalanced(mathematicalExpression)) {
+            if (mathematicalExpression.contains(")") || mathematicalExpression.contains("(")) {
                 throw new ValidatorException("Please check parentheses again!");
             }
         }

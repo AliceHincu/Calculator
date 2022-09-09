@@ -70,7 +70,7 @@ public class ComplexNumber {
             result += this.real;
 
             if (this.imaginary != ZERO) {
-                if(this.imaginary >= ZERO) {
+                if (this.imaginary >= ZERO) {
                     result += "+";
                 }
                 result += this.imaginary + IMAGINARY_UNIT;

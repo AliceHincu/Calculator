@@ -57,9 +57,6 @@ public enum BinaryOperatorEnum {
 
     /**
      * Check if the given sign is a binary operator.
-     *
-     * @param sign
-     * @return
      */
     public static boolean isOfType(String sign) {
         return Arrays.stream(values())

@@ -136,7 +136,7 @@ public class Calculations {
      * Computes first number raised by the power of the second
      */
     public static ComplexNumber calculatePowerOf(ComplexNumber number1, ComplexNumber number2) {
-        if(number1.getImaginary() == 0.0 && number2.getImaginary() == 0.0){
+        if (number1.getImaginary() == 0.0 && number2.getImaginary() == 0.0) {
             Double result = Math.pow(number1.getReal(), number2.getReal());
             return new ComplexNumber(result, 0.0);
         }

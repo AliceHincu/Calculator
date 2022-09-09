@@ -28,7 +28,7 @@ public class CalculatorUI {
         }
     }
 
-    private HashMap<String, Runnable> getCommandsMap(){
+    private HashMap<String, Runnable> getCommandsMap() {
         HashMap<String, Runnable> commands = new HashMap<>();
         commands.put(Command.EXIT_COMMAND.toString(), this::exit);
         commands.put(Command.HISTORY_COMMAND.toString(), this::showHistory);
@@ -63,9 +63,9 @@ public class CalculatorUI {
         System.out.println("""
                 Welcome! Please Enter your mathematical expression. Be aware that to exit you can just press 0. To show history of results and expressions just type "history"\s
                 """ + commandsText + """                
-                \n* Rules:
-                \t 1. For unary signs, you need to put them in brackets (ex: 5+(-9))
-               *  Available operations: +,-,*,/,min,max,sqrt""");
+                 \n* Rules:
+                 \t 1. For unary signs, you need to put them in brackets (ex: 5+(-9))
+                *  Available operations: +,-,*,/,min,max,sqrt""");
     }
 }
 

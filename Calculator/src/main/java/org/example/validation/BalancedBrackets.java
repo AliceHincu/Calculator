@@ -4,9 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class BalancedBrackets {
-    public boolean areBracketsBalanced(String expr)
-    {
-        Deque<Character> stack= new ArrayDeque<>();
+    public boolean areBracketsBalanced(String expr) {
+        Deque<Character> stack = new ArrayDeque<>();
 
         for (int i = 0; i < expr.length(); i++) {
             char x = expr.charAt(i);

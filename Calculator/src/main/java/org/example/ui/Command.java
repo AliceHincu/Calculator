@@ -13,7 +13,7 @@ public enum Command {
         this.menuDescription = menuDescription;
     }
 
-    public static String getMenuText(){
+    public static String getMenuText() {
         StringBuilder text = new StringBuilder("* Commands:");
         for (Command c : Command.values()) {
             text.append(String.format("\n\t%s -> %s", c.getInputCommand(), c.getMenuDescription()));

@@ -27,6 +27,7 @@ public enum UnaryOperatorEnum {
     public UnaryOperator<ComplexNumber> getOperation() {
         return operation;
     }
+
     public String getRegex() {
         return regex;
     }
