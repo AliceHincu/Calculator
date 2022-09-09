@@ -128,12 +128,16 @@ public class ConvertorInfixToPostfix {
         processMethods.put(MAX.getSymbol(), this::processUnaryOperator);
         processMethods.put(MIN.getSymbol(), this::processUnaryOperator);
         processMethods.put(SQRT.getSymbol(), this::processUnaryOperator);
+        processMethods.put(LN.getSymbol(), this::processUnaryOperator);
+        processMethods.put(EXP.getSymbol(), this::processUnaryOperator);
         processMethods.put(LEFT_BRACKET.getSymbol(), this::processBrackets);
         processMethods.put(RIGHT_BRACKET.getSymbol(), this::processBrackets);
         processMethods.put(ADDITION.getSymbol(), this::processBinaryOperator);
         processMethods.put(SUBTRACTION.getSymbol(), this::processBinaryOperator);
         processMethods.put(MULTIPLICATION.getSymbol(), this::processBinaryOperator);
         processMethods.put(DIVISION.getSymbol(), this::processBinaryOperator);
+        processMethods.put(POWER.getSymbol(), this::processBinaryOperator);
+        processMethods.put(MODULO.getSymbol(), this::processBinaryOperator);
     }
 
     private void resetFields() {

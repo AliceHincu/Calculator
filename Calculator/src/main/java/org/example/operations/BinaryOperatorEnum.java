@@ -12,7 +12,7 @@ public enum BinaryOperatorEnum {
     DIVIDE("/", Calculations::calculateDivision, "/"),
     MAX("max", Calculations::calculateMaximum, "max"),
     MIN("min", Calculations::calculateMinimum, "min"),
-    POW("^", Calculations::calculatePowerOf, "^"),
+    POW("^", Calculations::calculatePowerOf, "\\^"),
     MOD("%", Calculations::calculateRemainder, "%");
 
     private final String sign;

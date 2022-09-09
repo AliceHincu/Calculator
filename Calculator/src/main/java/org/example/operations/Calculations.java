@@ -126,9 +126,9 @@ public class Calculations {
     /**
      * Computes the logarithm of this complex number
      */
-    public static ComplexNumber calculateLogarithm(ComplexNumber number) {
-        double modulus = getAbsoluteValue(number);
-        double arg = Math.atan2(number.getImaginary(), number.getReal());
+    public static ComplexNumber calculateNaturalLogarithm(ComplexNumber number) {
+        Double modulus = getAbsoluteValue(number);
+        Double arg = Math.atan2(number.getImaginary(), number.getReal());
         return new ComplexNumber(Math.log(modulus), arg);
     }
 
@@ -136,7 +136,11 @@ public class Calculations {
      * Computes first number raised by the power of the second
      */
     public static ComplexNumber calculatePowerOf(ComplexNumber number1, ComplexNumber number2) {
-        return calculateExponential(calculateMultiplication(calculateLogarithm(number1), number2));
+        if(number1.getImaginary() == 0.0 && number2.getImaginary() == 0.0){
+            Double result = Math.pow(number1.getReal(), number2.getReal());
+            return new ComplexNumber(result, 0.0);
+        }
+        return calculateExponential(calculateMultiplication(calculateNaturalLogarithm(number1), number2));
     }
 
     /**

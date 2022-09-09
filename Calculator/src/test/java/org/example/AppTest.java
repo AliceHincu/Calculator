@@ -2,30 +2,25 @@ package org.example;
 
 import static org.hamcrest.CoreMatchers.is;
 //import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.example.domain.ComplexNumber;
 import org.example.service.CalculatorService;
+import org.example.validation.Validator;
+import org.example.validation.ValidatorException;
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
     /**
      * Rigorous Test :-)
+     * <a href="https://www.redcrab-software.com/en/Calculator/Algebra/Complex">https://www.redcrab-software.com/en/Calculator/Algebra/Complex</a>
      */
     @Test
     public void shouldAnswerWithTrue() {
         assertTrue(true);
     }
-
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testExceptions() {
-//        App.add(2, -3);
-//        sol.convert("100 * 2 + 12");
-//    }
 
     @Test
     public void additionTests() {
@@ -114,5 +109,62 @@ public class AppTest {
         assertThat(calculatorService.evaluateRPN("sqrt(1)+sqrt(1)"), is(new ComplexNumber(2.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("sqrt(3+4i)"), is(new ComplexNumber(2.0, 1.0)));
         assertThat(calculatorService.evaluateRPN("sqrt(3*3)*sqrt(90/10)"), is(new ComplexNumber(9.0, 0.0)));
+    }
+
+    @Test
+    public void testLn(){
+        CalculatorService calculatorService = new CalculatorService();
+        assertThat(calculatorService.evaluateRPN("ln(5)"), is(new ComplexNumber(1.6094379124341003, 0.0)));
+        assertThat(calculatorService.evaluateRPN("ln(4+3i)"), is(new ComplexNumber(1.6094379124341003, 0.6435011087932844)));
+        assertThat(calculatorService.evaluateRPN("ln(4+min(3,1))"), is(new ComplexNumber(1.6094379124341003, 0.0)));
+        assertThat(calculatorService.evaluateRPN("ln(4^2)"), is(new ComplexNumber(1.6094379124341003, 0.0)));
+    }
+
+    @Test
+    public void testPower() {
+        CalculatorService calculatorService = new CalculatorService();
+        assertThat(calculatorService.evaluateRPN("(2+5i)^4i"), is(new ComplexNumber(0.00769869670596469, 0.003732257028178401)));
+        assertThat(calculatorService.evaluateRPN("2^4"), is(new ComplexNumber(16.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("(2+3i)^0"), is(new ComplexNumber(1.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("(5+5i)^(1-4i)"), is(new ComplexNumber(119.11476166505707, -112.18848572698937)));
+    }
+
+    @Test
+    public void testExp() {
+        CalculatorService calculatorService = new CalculatorService();
+        assertThat(calculatorService.evaluateRPN("exp(4+3i)"), is(new ComplexNumber(-54.051758861078156, 7.704891372731154)));
+        assertThat(calculatorService.evaluateRPN("exp(8)"), is(new ComplexNumber(2980.9579870417283, 0.0)));
+    }
+
+    @Test
+    public void testRemainder() {
+        CalculatorService calculatorService = new CalculatorService();
+        assertThat(calculatorService.evaluateRPN("10%5"), is(new ComplexNumber(0.0,0.0)));
+        assertThat(calculatorService.evaluateRPN("11%5"), is(new ComplexNumber(1.0,0.0)));
+    }
+
+    @Test(expected = ArithmeticException.class)
+    public void testArithmeticException() {
+        CalculatorService calculatorService = new CalculatorService();
+        calculatorService.evaluateRPN("5/0");
+    }
+
+    @Test
+    public void testValidatorException() {
+        Validator validator = new Validator();
+        ValidatorException exception = assertThrows(ValidatorException.class, () -> {
+            validator.validate("4+(3+5");
+        });
+
+        String expectedMessage = "Please check parentheses again!";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test(expected = Exception.class)
+    public void testException() {
+        CalculatorService calculatorService = new CalculatorService();
+        calculatorService.evaluateRPN("5+nfgfg");
     }
 }

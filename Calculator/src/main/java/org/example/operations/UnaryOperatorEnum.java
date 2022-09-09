@@ -3,11 +3,12 @@ package org.example.operations;
 import org.example.domain.ComplexNumber;
 
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.function.UnaryOperator;
 
 public enum UnaryOperatorEnum {
-    SQRT("sqrt", Calculations::calculateSquareRoot, "sqrt");
+    SQRT("sqrt", Calculations::calculateSquareRoot, "sqrt"),
+    LN("ln", Calculations::calculateNaturalLogarithm, "ln"),
+    EXP("exp", Calculations::calculateExponential, "exp");
 
     private final String sign;
     private final UnaryOperator<ComplexNumber> operation;

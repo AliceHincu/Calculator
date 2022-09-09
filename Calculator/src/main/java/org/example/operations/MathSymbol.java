@@ -9,9 +9,12 @@ public enum MathSymbol {
     MAX("max", 2),
     MIN("min", 2),
     SQRT("sqrt", 2),
+    LN("ln", 2),
+    EXP("exp", 2),
     MULTIPLICATION("*", 3),
     DIVISION("/", 3),
     MODULO("%", 3),
+    POWER("^", 3),
     ADDITION("+", 4),
     SUBTRACTION("-", 4),
     COMMA(",", 15);
