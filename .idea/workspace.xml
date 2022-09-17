@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c20ecec6-04a6-4008-85d8-68fdce0ab9d4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/gui/CalculatorOperationsGui.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/gui/CalculatorSymbolsGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/StarterUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/StarterGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/main/java/com/example/calculator/gui/CalculatorGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/convertor/ConvertorExpressionToList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/convertor/ConvertorInfixToPostfix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/domain/ComplexNumber.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/operations/BinaryOperatorEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/operations/Calculations.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/operations/MathSymbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/operations/UnaryOperatorEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/service/CalculatorService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/service/HistoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/ui/CalculatorUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/ui/Command.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/validation/BalancedBrackets.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/validation/Validator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/java/org/example/validation/ValidatorException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/main/resources/com/example/calculator/calculator-gui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/main/resources/com/example/calculator/calculator-gui.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/src/test/java/org/example/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/src/test/java/org/example/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/convertor/ConvertorExpressionToList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/convertor/ConvertorInfixToPostfix.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/domain/ComplexNumber.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/operations/BinaryOperatorEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/operations/Calculations.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/operations/MathSymbol.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/operations/UnaryOperatorEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/service/CalculatorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/service/HistoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/ui/CalculatorUI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/ui/Command.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/validation/BalancedBrackets.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/validation/Validator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/classes/org/example/validation/ValidatorException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculator/target/test-classes/org/example/AppTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator/target/test-classes/org/example/AppTest.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2EtNb76F5wRg9ZASjkGogn7jQ2v" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c20ecec6-04a6-4008-85d8-68fdce0ab9d4" name="Changes" comment="" />
+      <created>1663410988443</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663410988443</updated>
+      <workItem from="1663410990357" duration="12000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

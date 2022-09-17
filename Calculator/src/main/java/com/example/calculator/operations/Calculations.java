@@ -51,7 +51,7 @@ public class Calculations {
      * <a href="https://www.cuemath.com/numbers/division-of-complex-numbers/">https://www.cuemath.com/numbers/division-of-complex-numbers/</a>
      */
     public static ComplexNumber calculateDivision(ComplexNumber number1, ComplexNumber number2) {
-        if (number2.getImaginary() == 0.0 && number2.getReal() == 0.0) {
+        if (number2.equals(ZERO_C)) {
             throw new ArithmeticException("Error...Division by 0!");
         }
         ComplexNumber result = new ComplexNumber();
@@ -89,7 +89,7 @@ public class Calculations {
     public static ComplexNumber calculateSquareRoot(ComplexNumber number) {
         ComplexNumber result = new ComplexNumber();
 
-        if ((number.getReal() == 0) && (number.getImaginary() == 0.0)) {
+        if (number.equals(ZERO_C)) {
             result.setReal(0.0);
             result.setImaginary(0.0);
             return result;
@@ -127,6 +127,9 @@ public class Calculations {
      * Computes the logarithm of this complex number
      */
     public static ComplexNumber calculateNaturalLogarithm(ComplexNumber number) {
+        if(number.equals(ZERO_C)){
+            throw new ArithmeticException("Error...ln(0) does not exist!");
+        }
         Double modulus = getAbsoluteValue(number);
         Double arg = Math.atan2(number.getImaginary(), number.getReal());
         return new ComplexNumber(Math.log(modulus), arg);

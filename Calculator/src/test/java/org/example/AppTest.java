@@ -84,6 +84,7 @@ public class AppTest {
         assertThat(calculatorService.evaluateRPN("1+2*max(2,max(1*5,0))"), is(new ComplexNumber(11.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("1+2*max(2,max((5+10)*2,2))"), is(new ComplexNumber(61.0, 0.0)));
         assertThat(calculatorService.evaluateRPN("max((1+1i),(2+1i))"), is(new ComplexNumber(2.0, 1.0)));
+        assertThat(calculatorService.evaluateRPN("min(3,2,1)"), is(new ComplexNumber(1.0,0.0)));
     }
 
     @Test
