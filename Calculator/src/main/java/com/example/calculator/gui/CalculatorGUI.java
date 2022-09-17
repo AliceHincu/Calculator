@@ -1,10 +1,12 @@
 package com.example.calculator.gui;
 
+import com.example.calculator.convertor.ConvertorExpressionToList;
 import com.example.calculator.domain.ComplexNumber;
 import com.example.calculator.gui.enums.CalculatorButtonsTextGui;
 import com.example.calculator.gui.enums.CalculatorDigitsGui;
 import com.example.calculator.gui.enums.CalculatorOperationsGui;
 import com.example.calculator.gui.enums.CalculatorSymbolsGui;
+import com.example.calculator.operations.UnaryOperatorEnum;
 import com.example.calculator.service.CalculatorService;
 import com.example.calculator.service.HistoryService;
 import com.example.calculator.validation.Validator;
@@ -43,24 +45,44 @@ public class CalculatorGUI {
     @FXML
     private Button periodButton = new Button(CalculatorDigitsGui.POINT.getSymbol());
     @FXML
+    private Button commaButton = new Button(CalculatorSymbolsGui.COMMA.getSymbol());
+    @FXML
     private Button clearButton = new Button(CalculatorButtonsTextGui.CLEAR.getSymbol());
     @FXML
     private Button deleteButton = new Button(CalculatorButtonsTextGui.DELETE_CHAR.getSymbol());
     @FXML
+    private Button lnButton = new Button(CalculatorOperationsGui.LN.getOperation());
+    @FXML
+    private Button expButton = new Button(CalculatorOperationsGui.EXP.getOperation());
+    @FXML
+    private Button sqrtButton = new Button(CalculatorOperationsGui.SQRT.getOperation());
+    @FXML
+    private Button maxButton = new Button(CalculatorOperationsGui.MAX.getOperation());
+    @FXML
+    private Button minButton = new Button(CalculatorOperationsGui.MIN.getOperation());
+    @FXML
+    private Button changeSgnButton = new Button(CalculatorButtonsTextGui.SIGN_CHANGE.getSymbol());
+
+    @FXML
     private TextField currentNumber = new TextField(CalculatorDigitsGui.ZERO.getSymbol());
     @FXML
-    private Text equation = new Text(CalculatorDigitsGui.ZERO.getSymbol());
+    private TextField equation = new TextField(CalculatorDigitsGui.ZERO.getSymbol());
 
     private List<String> equationList;
 
     private List<Button> numberButtonsList;
-    Queue<String> queueDefaultValuesForBrackets;
+    Deque<String> stackOperationsComma; // only allow comma for max and min operands
     private CalculatorService calculatorService;
     private HistoryService historyService;
     private Validator validator;
 
+    private ConvertorExpressionToList regexConvertor;
+
     @FXML
     public void initialize() {
+        //todo: implement history
+        //todo: when you press right paranthesis, don t putt always 0
+        //todo:
         equationList = new ArrayList<>();
         numberButtonsList = new ArrayList<>(Arrays.asList(
                 zeroButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, iButton, periodButton
@@ -68,7 +90,9 @@ public class CalculatorGUI {
         calculatorService = new CalculatorService();
         historyService = new HistoryService();
         validator = new Validator();
-        queueDefaultValuesForBrackets = new LinkedList<>();
+        regexConvertor = new ConvertorExpressionToList();
+        stackOperationsComma = new LinkedList<>();
+        commaButton.setDisable(true);
     }
 
     /**
@@ -76,8 +100,8 @@ public class CalculatorGUI {
      * - Change the clear button from C to CE
      * - If the digit is "i", then disables all number related buttons
      * - Adds the digit to the current displayed number
-     *      - if the current number is zero and the digit is not ".", replace the current number with the digit
-     *      - if the digit is ".", add it after the current number (only if there isn't already a "." in the number)
+     * - if the current number is zero and the digit is not ".", replace the current number with the digit
+     * - if the digit is ".", add it after the current number (only if there isn't already a "." in the number)
      */
     public void processNumber(ActionEvent e) {
         clearButton.setText(CalculatorButtonsTextGui.CLEAR_ENTRY.getSymbol());
@@ -88,7 +112,7 @@ public class CalculatorGUI {
         if (digit.equals(CalculatorDigitsGui.POINT.getSymbol()) && currentNumber.getText().contains(CalculatorDigitsGui.POINT.getSymbol()))
             return;
 
-        if(currentNumber.getText().equals(CalculatorDigitsGui.ZERO.getSymbol()) && !digit.equals(CalculatorDigitsGui.POINT.getSymbol())){
+        if (currentNumber.getText().equals(CalculatorDigitsGui.ZERO.getSymbol()) && !digit.equals(CalculatorDigitsGui.POINT.getSymbol())) {
             currentNumber.setText(digit);
         } else {
             currentNumber.setText(currentNumber.getText() + digit);
@@ -98,17 +122,21 @@ public class CalculatorGUI {
     /**
      * A basic operation is an operation that doesn't require brackets.
      * Takes the operation from the button clicked by the user.
-     *  - If the last element from the saved expression is an operation, then only replace the last operation
-     *  - Else, add both the current number and the selected operation to the saved expression.
+     * - If the last element from the saved expression is a basic operation, then replace only the last operation
+     * - If the last element is an operation with brackets, only add the operand
+     * - Else, add both the current number and the selected operation to the saved expression.
      * Also enable buttons
      */
     public void processOperandBasic(ActionEvent e) {
         String operand = ((Button) e.getSource()).getText();
+        String lastElement = equationList.isEmpty() ? null : equationList.get(equationList.size() - 1);
 
-        if(currentNumber.getText().equals(CalculatorDigitsGui.ZERO.getSymbol()) && !equationList.isEmpty()) {
-            equationList.set(equationList.size()-1, operand);
+        if (currentNumber.getText().equals(CalculatorDigitsGui.ZERO.getSymbol()) && !equationList.isEmpty() && CalculatorOperationsGui.isOperation(lastElement)) {
+            equationList.set(equationList.size() - 1, operand);
         } else {
-            equationList.add(currentNumber.getText());
+            if (!CalculatorSymbolsGui.isSymbol(lastElement)) {
+                equationList.add(currentNumber.getText());
+            }
             equationList.add(operand);
         }
 
@@ -119,26 +147,40 @@ public class CalculatorGUI {
 
     /**
      * Takes the operation from the button clicked by the user.
-     *  - Add to equation the operand only if the last element is an operand or a symbol.
+     * - Add to equation the operand only if the last element is an operand or a symbol.
+     * - Only enable comma if it's max/min.
      */
     public void processOperandWithBrackets(ActionEvent e) {
         String operand = ((Button) e.getSource()).getText();
-        String lastElement = equationList.get(equationList.size()-1);
-        if(CalculatorOperationsGui.isOperation(lastElement) || CalculatorSymbolsGui.isSymbol(lastElement)) {
+        String lastElement = equationList.isEmpty() ? operand : equationList.get(equationList.size() - 1);
+
+        if (CalculatorOperationsGui.isOperation(lastElement) || CalculatorSymbolsGui.isSymbol(lastElement)) {
             equationList.add(operand);
             equationList.add(CalculatorSymbolsGui.LEFT_BRACKET.getSymbol());
             this.setExpressionTextToList();
         }
+
+        commaButton.setDisable(!operand.equals(CalculatorOperationsGui.MAX.getOperation()) && !operand.equals(CalculatorOperationsGui.MIN.getOperation()));
+        stackOperationsComma.push(operand);
+
     }
 
     /**
      * Takes the symbol from the button clicked by the user. Add it to the equation
-     *  - if the symbol is ")" or "," , also add the current number before the symbol
-     * @param e
+     * - if the symbol is "," or ")", also add the current number before the symbol
+     * - if it's ")", enable comma if the previous unfinished operand is max/min and disable number buttons
+     * - if it's a "," , enable number buttons
      */
-    public void processSymbol(ActionEvent e){
+    public void processSymbol(ActionEvent e) {
         String symbol = ((Button) e.getSource()).getText();
-        if(symbol.equals(CalculatorSymbolsGui.COMMA.getSymbol()) || symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())){
+
+        if(symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())){
+            stackOperationsComma.pop();
+            String currentOp = stackOperationsComma.peek();
+            System.out.println(currentOp);
+            commaButton.setDisable(currentOp == null || (!currentOp.equals(CalculatorOperationsGui.MAX.getOperation()) && !currentOp.equals(CalculatorOperationsGui.MIN.getOperation())));
+        }
+        if (symbol.equals(CalculatorSymbolsGui.COMMA.getSymbol()) || symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())) {
             equationList.add(currentNumber.getText());
         }
         equationList.add(symbol);
@@ -146,8 +188,8 @@ public class CalculatorGUI {
         cleanExpression();
     }
 
-    public void processChangeSign(ActionEvent e){
-
+    public void processChangeSign(ActionEvent e) {
+        //todo
     }
 
 
@@ -171,7 +213,7 @@ public class CalculatorGUI {
      */
     public void deleteShownText(ActionEvent e) {
         String currentText = currentNumber.getText();
-        if(currentText.charAt(currentText.length() - 1) == CalculatorDigitsGui.IMAGINARY_UNIT.getSymbol().charAt(0)){
+        if (currentText.charAt(currentText.length() - 1) == CalculatorDigitsGui.IMAGINARY_UNIT.getSymbol().charAt(0)) {
             enableNumberButtons();
         }
         if (currentText.length() == 1) {
@@ -191,6 +233,8 @@ public class CalculatorGUI {
             this.validator.validate(equationText);
             ComplexNumber result = this.calculatorService.evaluateRPN(equationText);
             historyService.add(equationText, result);
+            System.out.println(equationText);
+            System.out.println(result);
             this.clean();
             currentNumber.setText(result.toString());
             this.enableNumberButtons();
@@ -201,16 +245,21 @@ public class CalculatorGUI {
         }
     }
 
+    public void updateEquation(){
+        equationList = regexConvertor.convert(equation.getText());
+    }
+
     /**
      * After "=" is pressed, complete the expression where it needs to:
-     *  - If last element is a basic operation, add the current number to the list.
-     *  - If last element is a bracket, just calculate.
+     * - If last element is a basic operation, add the current number to the list.
+     * - If last element is a bracket, just calculate.
      */
     private void finalizeExpression() {
-        String lastElement = equationList.isEmpty() ? CalculatorDigitsGui.ZERO.getSymbol() : equationList.get(equationList.size()-1);
-        if(CalculatorOperationsGui.isOperation(lastElement)){
+        String lastElement = equationList.isEmpty() ? CalculatorDigitsGui.ZERO.getSymbol() : equationList.get(equationList.size() - 1);
+        if (CalculatorOperationsGui.isOperation(lastElement)) {
             equationList.add(currentNumber.getText());
-        this.setExpressionTextToList();}
+            this.setExpressionTextToList();
+        }
     }
 
     private void disableNumberButtons() {
@@ -230,7 +279,7 @@ public class CalculatorGUI {
         equation.setText(text);
     }
 
-    private void clean(){
+    private void clean() {
         currentNumber.setText(CalculatorDigitsGui.ZERO.getSymbol());
         equation.setText(CalculatorDigitsGui.ZERO.getSymbol());
         equationList.clear();
