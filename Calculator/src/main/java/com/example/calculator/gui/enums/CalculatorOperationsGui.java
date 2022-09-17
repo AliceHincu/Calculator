@@ -1,4 +1,4 @@
-package com.example.calculator.gui;
+package com.example.calculator.gui.enums;
 
 import com.example.calculator.operations.MathSymbol;
 

@@ -16,8 +16,8 @@ public class BalancedBrackets {
             }
 
             // If current character is not opening bracket, then it must be closing. So stack cannot be empty at this point.
-            if (stack.isEmpty())
-                return false;
+//            if (stack.isEmpty())
+//                return false;
 
             char check;
             switch (x) {

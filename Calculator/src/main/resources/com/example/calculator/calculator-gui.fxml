@@ -34,36 +34,36 @@
                         <RowConstraints maxHeight="48.400000000000006" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="ln" />
-                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="exp" GridPane.columnIndex="1" />
-                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="sqrt" GridPane.columnIndex="2" />
+                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperandWithBrackets" prefHeight="50.0" prefWidth="70.0" text="ln" />
+                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperandWithBrackets" prefHeight="50.0" prefWidth="70.0" text="exp" GridPane.columnIndex="1" />
+                        <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperandWithBrackets" prefHeight="50.0" prefWidth="70.0" text="sqrt" GridPane.columnIndex="2" />
                         <Button fx:id="clearButton" maxHeight="-Infinity" mnemonicParsing="false" onAction="#clearShownText" prefHeight="50.0" prefWidth="70.0" text="C" GridPane.columnIndex="3" />
                         <Button fx:id="oneButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="1" GridPane.rowIndex="3" />
                         <Button fx:id="twoButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Button fx:id="threeButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Button mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="^" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                        <Button mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="^" GridPane.columnIndex="4" GridPane.rowIndex="4" />
                         <Button fx:id="fourButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="4" GridPane.rowIndex="4" />
                         <Button fx:id="fiveButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Button fx:id="sixButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Button mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Button mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="/" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="/" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Button fx:id="sevenButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="7" GridPane.rowIndex="5" />
                         <Button fx:id="eightButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="8" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Button fx:id="nineButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Button mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <Button mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="*" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="+/-" GridPane.rowIndex="6" />
+                        <Button mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <Button mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="*" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <Button fx:id="zeroButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Button fx:id="periodButton" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="." GridPane.columnIndex="2" GridPane.rowIndex="6" />
                         <Button mnemonicParsing="false" onAction="#processEvaluation" prefHeight="70.0" prefWidth="117.0" text="=" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2" />
                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteShownText" prefHeight="99.0" prefWidth="56.0" text="&lt;=|" GridPane.columnIndex="4" GridPane.rowSpan="3" />
-                        <Button fx:id="iButton" layoutX="192.0" layoutY="59.0" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="i" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="(" GridPane.rowIndex="2" />
-                  <Button layoutX="10.0" layoutY="51.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text=")" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button layoutX="71.0" layoutY="51.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="," GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Button layoutX="253.0" layoutY="91.0" mnemonicParsing="false" onAction="#processBasicOperation" prefHeight="50.0" prefWidth="70.0" text="\%" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                  <Button layoutX="10.0" layoutY="79.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="max" GridPane.rowIndex="1" />
-                  <Button layoutX="10.0" layoutY="44.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperation" prefHeight="50.0" prefWidth="70.0" text="min" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="iButton" layoutX="192.0" layoutY="59.0" mnemonicParsing="false" onAction="#processNumber" prefHeight="50.0" prefWidth="70.0" text="i" GridPane.rowIndex="6" />
+                  <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#processSymbol" prefHeight="50.0" prefWidth="70.0" text="(" GridPane.rowIndex="2" />
+                  <Button layoutX="10.0" layoutY="51.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processSymbol" prefHeight="50.0" prefWidth="70.0" text=")" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button layoutX="71.0" layoutY="51.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processSymbol" prefHeight="50.0" prefWidth="70.0" text="," GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button layoutX="253.0" layoutY="91.0" mnemonicParsing="false" onAction="#processOperandBasic" prefHeight="50.0" prefWidth="70.0" text="\%" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <Button layoutX="10.0" layoutY="79.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperandWithBrackets" prefHeight="50.0" prefWidth="70.0" text="max" GridPane.rowIndex="1" />
+                  <Button layoutX="10.0" layoutY="44.0" maxHeight="-Infinity" mnemonicParsing="false" onAction="#processOperandWithBrackets" prefHeight="50.0" prefWidth="70.0" text="min" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" onAction="#processChangeSign" prefHeight="50.0" prefWidth="70.0" text="+/-" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     </children>
                     <VBox.margin>
                         <Insets top="10.0" />
