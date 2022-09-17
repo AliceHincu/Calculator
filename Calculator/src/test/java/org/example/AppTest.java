@@ -1,14 +1,14 @@
 package org.example;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.example.domain.ComplexNumber;
-import org.example.service.CalculatorService;
-import org.example.validation.Validator;
-import org.example.validation.ValidatorException;
+import com.example.calculator.domain.ComplexNumber;
+import com.example.calculator.service.CalculatorService;
+import com.example.calculator.validation.Validator;
+import com.example.calculator.validation.ValidatorException;
 import org.junit.Test;
 
 public class AppTest {
@@ -111,12 +111,12 @@ public class AppTest {
     }
 
     @Test
-    public void testLn(){
+    public void testLn() {
         CalculatorService calculatorService = new CalculatorService();
         assertThat(calculatorService.evaluateRPN("ln(5)"), is(new ComplexNumber(1.6094379124341003, 0.0)));
         assertThat(calculatorService.evaluateRPN("ln(4+3i)"), is(new ComplexNumber(1.6094379124341003, 0.6435011087932844)));
         assertThat(calculatorService.evaluateRPN("ln(4+min(3,1))"), is(new ComplexNumber(1.6094379124341003, 0.0)));
-        assertThat(calculatorService.evaluateRPN("ln(4^2)"), is(new ComplexNumber(1.6094379124341003, 0.0)));
+        assertThat(calculatorService.evaluateRPN("ln(4^2)"), is(new ComplexNumber(2.772588722239781, 0.0)));
     }
 
     @Test
@@ -138,8 +138,8 @@ public class AppTest {
     @Test
     public void testRemainder() {
         CalculatorService calculatorService = new CalculatorService();
-        assertThat(calculatorService.evaluateRPN("10%5"), is(new ComplexNumber(0.0,0.0)));
-        assertThat(calculatorService.evaluateRPN("11%5"), is(new ComplexNumber(1.0,0.0)));
+        assertThat(calculatorService.evaluateRPN("10%5"), is(new ComplexNumber(0.0, 0.0)));
+        assertThat(calculatorService.evaluateRPN("11%5"), is(new ComplexNumber(1.0, 0.0)));
     }
 
     @Test(expected = ArithmeticException.class)
