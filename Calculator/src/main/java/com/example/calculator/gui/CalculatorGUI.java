@@ -1,6 +1,10 @@
 package com.example.calculator.gui;
 
 import com.example.calculator.domain.ComplexNumber;
+import com.example.calculator.service.CalculatorService;
+import com.example.calculator.service.HistoryService;
+import com.example.calculator.validation.Validator;
+import com.example.calculator.validation.ValidatorException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -41,24 +45,28 @@ public class CalculatorGUI {
     @FXML
     private Button deleteButton = new Button(CalculatorSymbolsGui.DELETE_CHAR.getSymbol());
     @FXML
-    private TextField currentNumber;
+    private TextField currentNumber = new TextField(CalculatorSymbolsGui.ZERO.getSymbol());
     @FXML
-    private final Text savedExpression = new Text("");
+    private Text equation = new Text(CalculatorSymbolsGui.ZERO.getSymbol());
 
-    private List<String> savedExpressionList;
+    private List<String> equationList;
 
     private List<Button> numberButtonsList;
 
     private String operation = "";
+    private CalculatorService calculatorService;
+    private HistoryService historyService;
+    private Validator validator;
 
     @FXML
     public void initialize() {
-        savedExpressionList = new ArrayList<>();
-        currentNumber.setText(CalculatorSymbolsGui.ZERO.getSymbol());
+        equationList = new ArrayList<>();
         numberButtonsList = new ArrayList<>(Arrays.asList(
                 zeroButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, iButton, periodButton
         ));
-
+        calculatorService = new CalculatorService();
+        historyService = new HistoryService();
+        validator = new Validator();
     }
 
     /**
@@ -66,9 +74,8 @@ public class CalculatorGUI {
      * - Change the clear button from C to CE
      * - If the digit is "i", then disables all number related buttons
      * - Adds the digit to the current displayed number
-     *      - if the current number is zero and the digit is ".", add it after 0.
-     *      - if there is already a ".", do not add it
-     *      - else, replace the current number with the digit
+     *      - if the current number is zero and the digit is not ".", replace the current number with the digit
+     *      - if the digit is ".", add it after the current number (only if there isn't already a "."=)
      */
     public void processNumber(ActionEvent e) {
         clearButton.setText(CalculatorSymbolsGui.CLEAR_ENTRY.getSymbol());
@@ -94,8 +101,8 @@ public class CalculatorGUI {
      */
     public void processOperation(ActionEvent e) {
         String operation = ((Button) e.getSource()).getText();
-        String oldExpression = savedExpression.getText();
-        if(savedExpressionList.isEmpty() || CalculatorOperationsGui.isOperation(savedExpressionList.get(savedExpressionList.size()-2))){
+        String oldExpression = equation.getText();
+        if(equationList.isEmpty() || CalculatorOperationsGui.isOperation(equationList.get(equationList.size()-2))){
 
         }
 //        String newExpression = oldExpression + currentNumber + operation + CalculatorSymbolsGui.LEFT_BRACKET.getSymbol();
@@ -103,18 +110,38 @@ public class CalculatorGUI {
     }
 
     /**
+     * A basic operation is an operation that doesn't require brackets.
+     * Takes the operation from the button clicked by the user.
+     *  - If the last element from the saved expression is an operation, then only replace the last operation
+     *  - Else, add both the current number and the selected operation to the saved expression.
+     * Also enable buttons
+     */
+    public void processBasicOperation(ActionEvent e) {
+        String operation = ((Button) e.getSource()).getText();
+
+        if(currentNumber.getText().equals(CalculatorSymbolsGui.ZERO.getSymbol()) && !equationList.isEmpty()) {
+            equationList.set(equationList.size()-1, operation);
+        } else {
+            equationList.add(currentNumber.getText());
+            equationList.add(operation);
+        }
+
+        this.setExpressionTextToList();
+        cleanExpression();
+        this.enableNumberButtons();
+    }
+
+
+    /**
      * If the text from the clear button is CE, only clear current number. Else, clear everything.
      */
     public void clearShownText(ActionEvent e) {
         String text = ((Button) e.getSource()).getText();
 
-        currentNumber.setText(CalculatorSymbolsGui.ZERO.getSymbol());
-        operation = "";
-
         if (text.equals(CalculatorSymbolsGui.CLEAR_ENTRY.getSymbol())) {
-            clearButton.setText(CalculatorSymbolsGui.CLEAR.getSymbol());
+            cleanExpression();
         } else {
-            // todo delete history
+            clean();
         }
     }
 
@@ -137,8 +164,31 @@ public class CalculatorGUI {
 
     }
 
-    public void processEvaluation() {
+    public void processEvaluation(ActionEvent e) {
+        finalizeExpression();
+        String equationText = equation.getText();
 
+        try {
+            this.validator.validate(equationText);
+            ComplexNumber result = this.calculatorService.evaluateRPN(equationText);
+            historyService.add(equationText, result);
+            this.clean();
+            currentNumber.setText(result.toString());
+            this.enableNumberButtons();
+        } catch (ArithmeticException | ValidatorException exception) {
+            System.out.println(exception.getMessage());
+        } catch (Exception exception) {
+            System.out.println("You mathematical expression is incorrect! Please check it again.");
+        }
+    }
+
+    /**
+     * After "=" is pressed, complete the expression where it needs to:
+     *  - If last element is an operation, delete it.
+     */
+    private void finalizeExpression() {
+        equationList.add(currentNumber.getText());
+        this.setExpressionTextToList();
     }
 
     private void disableNumberButtons() {
@@ -152,4 +202,24 @@ public class CalculatorGUI {
             button.setDisable(false);
         }
     }
+
+    private void setExpressionTextToList() {
+        String text = String.join("", equationList);
+        equation.setText(text);
+    }
+
+    private void clean(){
+        currentNumber.setText(CalculatorSymbolsGui.ZERO.getSymbol());
+        equation.setText(CalculatorSymbolsGui.ZERO.getSymbol());
+        equationList.clear();
+        operation = "";
+        clearButton.setText(CalculatorSymbolsGui.CLEAR.getSymbol());
+    }
+
+    private void cleanExpression() {
+        currentNumber.setText(CalculatorSymbolsGui.ZERO.getSymbol());
+        operation = "";
+        clearButton.setText(CalculatorSymbolsGui.CLEAR.getSymbol());
+    }
+
 }
