@@ -6,20 +6,54 @@ import com.example.calculator.gui.enums.CalculatorButtonsTextGui;
 import com.example.calculator.gui.enums.CalculatorDigitsGui;
 import com.example.calculator.gui.enums.CalculatorOperationsGui;
 import com.example.calculator.gui.enums.CalculatorSymbolsGui;
-import com.example.calculator.operations.UnaryOperatorEnum;
 import com.example.calculator.service.CalculatorService;
 import com.example.calculator.service.HistoryService;
 import com.example.calculator.validation.Validator;
 import com.example.calculator.validation.ValidatorException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.scene.input.*;
 
 import java.util.*;
 
 public class CalculatorGUI {
+    /**
+     * --- buttons - operations ---
+     **/
+    @FXML
+    private Button lnButton = new Button(CalculatorOperationsGui.LN.getOperation());
+    @FXML
+    private Button expButton = new Button(CalculatorOperationsGui.EXP.getOperation());
+    @FXML
+    private Button sqrtButton = new Button(CalculatorOperationsGui.SQRT.getOperation());
+    @FXML
+    private Button maxButton = new Button(CalculatorOperationsGui.MAX.getOperation());
+    @FXML
+    private Button minButton = new Button(CalculatorOperationsGui.MIN.getOperation());
+    @FXML
+    private Button changeSgnButton = new Button(CalculatorOperationsGui.LN.getOperation());
+    @FXML
+    private Button divisionButton = new Button(CalculatorOperationsGui.DIVISION.getOperation());
+    @FXML
+    private Button multiplicationButton = new Button(CalculatorOperationsGui.MULTIPLICATION.getOperation());
+    @FXML
+    private Button minusButton = new Button(CalculatorOperationsGui.SUBTRACTION.getOperation());
+    @FXML
+    private Button plusButton = new Button(CalculatorOperationsGui.ADDITION.getOperation());
+    @FXML
+    private Button moduloButton = new Button(CalculatorOperationsGui.MODULO.getOperation());
+    @FXML
+    private Button powerButton = new Button(CalculatorOperationsGui.POWER.getOperation());
+    @FXML
+    private Button equalButton = new Button("=");
+    /**
+     * --- buttons - number ---
+     **/
     @FXML
     private Button zeroButton = new Button(CalculatorDigitsGui.ZERO.getSymbol());
     @FXML
@@ -44,55 +78,60 @@ public class CalculatorGUI {
     private Button iButton = new Button(ComplexNumber.IMAGINARY_UNIT);
     @FXML
     private Button periodButton = new Button(CalculatorDigitsGui.POINT.getSymbol());
+    /**
+     * --- buttons - symbols and text ---
+     **/
     @FXML
     private Button commaButton = new Button(CalculatorSymbolsGui.COMMA.getSymbol());
     @FXML
+    private Button leftBracketButton = new Button(CalculatorSymbolsGui.LEFT_BRACKET.getSymbol());
+    @FXML
+    private Button rightBracketButton = new Button(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol());
+    @FXML
     private Button clearButton = new Button(CalculatorButtonsTextGui.CLEAR.getSymbol());
     @FXML
-    private Button deleteButton = new Button(CalculatorButtonsTextGui.DELETE_CHAR.getSymbol());
-    @FXML
-    private Button lnButton = new Button(CalculatorOperationsGui.LN.getOperation());
-    @FXML
-    private Button expButton = new Button(CalculatorOperationsGui.EXP.getOperation());
-    @FXML
-    private Button sqrtButton = new Button(CalculatorOperationsGui.SQRT.getOperation());
-    @FXML
-    private Button maxButton = new Button(CalculatorOperationsGui.MAX.getOperation());
-    @FXML
-    private Button minButton = new Button(CalculatorOperationsGui.MIN.getOperation());
-    @FXML
-    private Button changeSgnButton = new Button(CalculatorButtonsTextGui.SIGN_CHANGE.getSymbol());
-
+    private Button backspaceButton = new Button(CalculatorButtonsTextGui.DELETE_CHAR.getSymbol());
+    /**
+     * --- text fields and lists ---
+     */
     @FXML
     private TextField currentNumber = new TextField(CalculatorDigitsGui.ZERO.getSymbol());
     @FXML
     private TextField equation = new TextField(CalculatorDigitsGui.ZERO.getSymbol());
-
+    @FXML
+    private ListView<String> historyListView;
+    ObservableList<String> historyList;
     private List<String> equationList;
-
     private List<Button> numberButtonsList;
     Deque<String> stackOperationsComma; // only allow comma for max and min operands
     private CalculatorService calculatorService;
-    private HistoryService historyService;
     private Validator validator;
-
     private ConvertorExpressionToList regexConvertor;
+    private HashMap<KeyCode, Button> keyButtonMap;
+    private HashMap<KeyCombination, Button> keyCombinationButtonMap;
 
     @FXML
     public void initialize() {
-        //todo: implement history
         //todo: when you press right paranthesis, don t putt always 0
         //todo:
         equationList = new ArrayList<>();
         numberButtonsList = new ArrayList<>(Arrays.asList(
                 zeroButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, iButton, periodButton
         ));
+        keyButtonMap = new HashMap<>();
+        keyCombinationButtonMap = new HashMap<>();
+        populateKeyButtonMap();
+        populateKeyCombinationButtonMap();
         calculatorService = new CalculatorService();
-        historyService = new HistoryService();
         validator = new Validator();
         regexConvertor = new ConvertorExpressionToList();
         stackOperationsComma = new LinkedList<>();
+
+        historyList = FXCollections.observableArrayList();
+        historyListView.setItems(historyList);
+
         commaButton.setDisable(true);
+        currentNumber.setEditable(false);
     }
 
     /**
@@ -174,7 +213,7 @@ public class CalculatorGUI {
     public void processSymbol(ActionEvent e) {
         String symbol = ((Button) e.getSource()).getText();
 
-        if(symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())){
+        if (symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())) {
             stackOperationsComma.pop();
             String currentOp = stackOperationsComma.peek();
             System.out.println(currentOp);
@@ -232,9 +271,7 @@ public class CalculatorGUI {
         try {
             this.validator.validate(equationText);
             ComplexNumber result = this.calculatorService.evaluateRPN(equationText);
-            historyService.add(equationText, result);
-            System.out.println(equationText);
-            System.out.println(result);
+            historyList.add(0, equationText + " =" + result.toString());
             this.clean();
             currentNumber.setText(result.toString());
             this.enableNumberButtons();
@@ -245,7 +282,7 @@ public class CalculatorGUI {
         }
     }
 
-    public void updateEquation(){
+    public void updateEquation() {
         equationList = regexConvertor.convert(equation.getText());
     }
 
@@ -289,6 +326,71 @@ public class CalculatorGUI {
     private void cleanExpression() {
         currentNumber.setText(CalculatorDigitsGui.ZERO.getSymbol());
         clearButton.setText(CalculatorButtonsTextGui.CLEAR.getSymbol());
+    }
+
+    public void disableFocus(MouseEvent event) {
+        if (!equation.equals(event.getSource()))
+            equation.getParent().requestFocus();
+    }
+
+    public void keyPressed(KeyEvent event) {
+        System.out.println(event.getCode().getChar());
+        if (!equation.isFocused()) {
+            // check for combination, then for simple key
+            var optional = keyCombinationButtonMap.entrySet().stream()
+                    .filter(entry -> entry.getKey().match(event))
+                    .findFirst();
+            if (optional.isPresent()) {
+                optional.get().getValue().fire();
+            } else {
+                Button button = keyButtonMap.get(event.getCode());
+                if (button != null) {
+                    button.fire();
+                }
+            }
+        }
+    }
+
+    private void populateKeyButtonMap() {
+        // '%' does not have a keycode...
+        // -- numbers
+        keyButtonMap.put(KeyCode.DIGIT0, zeroButton);
+        keyButtonMap.put(KeyCode.DIGIT1, oneButton);
+        keyButtonMap.put(KeyCode.DIGIT2, twoButton);
+        keyButtonMap.put(KeyCode.DIGIT3, threeButton);
+        keyButtonMap.put(KeyCode.DIGIT4, fourButton);
+        keyButtonMap.put(KeyCode.DIGIT5, fiveButton);
+        keyButtonMap.put(KeyCode.DIGIT6, sixButton);
+        keyButtonMap.put(KeyCode.DIGIT7, sevenButton);
+        keyButtonMap.put(KeyCode.DIGIT8, eightButton);
+        keyButtonMap.put(KeyCode.DIGIT9, nineButton);
+        keyButtonMap.put(KeyCode.I, iButton);
+        keyButtonMap.put(KeyCode.PERIOD, periodButton);
+        // -- operations
+        keyButtonMap.put(KeyCode.F1, lnButton);
+        keyButtonMap.put(KeyCode.F2, expButton);
+        keyButtonMap.put(KeyCode.F3, sqrtButton);
+        keyButtonMap.put(KeyCode.F4, maxButton);
+        keyButtonMap.put(KeyCode.F5, minButton);
+        keyButtonMap.put(KeyCode.F6, changeSgnButton);
+        keyButtonMap.put(KeyCode.SLASH, divisionButton);
+        keyButtonMap.put(KeyCode.STAR, multiplicationButton);
+        keyButtonMap.put(KeyCode.MINUS, minusButton);
+        keyButtonMap.put(KeyCode.EQUALS, equalButton);
+        keyButtonMap.put(KeyCode.ENTER, equalButton);
+        // -- symbols
+        keyButtonMap.put(KeyCode.COMMA, commaButton);
+        keyButtonMap.put(KeyCode.LEFT_PARENTHESIS, leftBracketButton);
+        keyButtonMap.put(KeyCode.RIGHT_PARENTHESIS, rightBracketButton);
+        keyButtonMap.put(KeyCode.DELETE, clearButton);
+        keyButtonMap.put(KeyCode.BACK_SPACE, backspaceButton);
+    }
+
+    private void populateKeyCombinationButtonMap() {
+        keyCombinationButtonMap.put(new KeyCharacterCombination("+", KeyCombination.SHIFT_DOWN), plusButton);
+        keyCombinationButtonMap.put(new KeyCharacterCombination("*", KeyCombination.SHIFT_DOWN), multiplicationButton);
+        keyCombinationButtonMap.put(new KeyCharacterCombination("%", KeyCombination.SHIFT_DOWN), moduloButton);
+        keyCombinationButtonMap.put(new KeyCharacterCombination("^", KeyCombination.SHIFT_DOWN), powerButton);
     }
 
 }
