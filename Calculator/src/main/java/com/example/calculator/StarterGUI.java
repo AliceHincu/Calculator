@@ -24,7 +24,6 @@ public class StarterGUI extends Application {
         // The above line MUST be inserted after root is loaded in order the controller of my 
         // app to be instantiated, otherwise we will get a null exception when handler will be invoked
 
-
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle(title);
         stage.setScene(scene);

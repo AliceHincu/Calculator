@@ -7,13 +7,13 @@ import com.example.calculator.gui.enums.CalculatorDigitsGui;
 import com.example.calculator.gui.enums.CalculatorOperationsGui;
 import com.example.calculator.gui.enums.CalculatorSymbolsGui;
 import com.example.calculator.service.CalculatorService;
-import com.example.calculator.service.HistoryService;
 import com.example.calculator.validation.Validator;
 import com.example.calculator.validation.ValidatorException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -102,33 +102,28 @@ public class CalculatorGUI {
     private ListView<String> historyListView;
     ObservableList<String> historyList;
     private List<String> equationList;
-    private List<Button> numberButtonsList;
     Deque<String> stackOperationsComma; // only allow comma for max and min operands
     private CalculatorService calculatorService;
     private Validator validator;
     private ConvertorExpressionToList regexConvertor;
-    private HashMap<KeyCode, Button> keyButtonMap;
-    private HashMap<KeyCombination, Button> keyCombinationButtonMap;
+    private final HashMap<KeyCode, Button> keyButtonMap = new HashMap<>();
+    private final HashMap<KeyCombination, Button> keyCombinationButtonMap = new HashMap<>();
 
     @FXML
     public void initialize() {
-        //todo: when you press right paranthesis, don t putt always 0
-        //todo:
-        equationList = new ArrayList<>();
-        numberButtonsList = new ArrayList<>(Arrays.asList(
-                zeroButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, iButton, periodButton
-        ));
-        keyButtonMap = new HashMap<>();
-        keyCombinationButtonMap = new HashMap<>();
-        populateKeyButtonMap();
-        populateKeyCombinationButtonMap();
+        //todo: change sign implementation
         calculatorService = new CalculatorService();
         validator = new Validator();
         regexConvertor = new ConvertorExpressionToList();
         stackOperationsComma = new LinkedList<>();
 
+        equationList = new ArrayList<>();
+
         historyList = FXCollections.observableArrayList();
         historyListView.setItems(historyList);
+
+        populateKeyButtonMap();
+        populateKeyCombinationButtonMap();
 
         commaButton.setDisable(true);
         currentNumber.setEditable(false);
@@ -146,8 +141,6 @@ public class CalculatorGUI {
         clearButton.setText(CalculatorButtonsTextGui.CLEAR_ENTRY.getSymbol());
         String digit = ((Button) e.getSource()).getText();
 
-        if (digit.equals(ComplexNumber.IMAGINARY_UNIT))
-            disableNumberButtons();
         if (digit.equals(CalculatorDigitsGui.POINT.getSymbol()) && currentNumber.getText().contains(CalculatorDigitsGui.POINT.getSymbol()))
             return;
 
@@ -173,7 +166,7 @@ public class CalculatorGUI {
         if (currentNumber.getText().equals(CalculatorDigitsGui.ZERO.getSymbol()) && !equationList.isEmpty() && CalculatorOperationsGui.isOperation(lastElement)) {
             equationList.set(equationList.size() - 1, operand);
         } else {
-            if (!CalculatorSymbolsGui.isSymbol(lastElement)) {
+            if (!CalculatorSymbolsGui.COMMA.equals(lastElement) && !CalculatorSymbolsGui.RIGHT_BRACKET.equals(lastElement)) {
                 equationList.add(currentNumber.getText());
             }
             equationList.add(operand);
@@ -181,7 +174,6 @@ public class CalculatorGUI {
 
         this.setExpressionTextToList();
         cleanExpression();
-        this.enableNumberButtons();
     }
 
     /**
@@ -204,27 +196,62 @@ public class CalculatorGUI {
 
     }
 
-    /**
-     * Takes the symbol from the button clicked by the user. Add it to the equation
-     * - if the symbol is "," or ")", also add the current number before the symbol
-     * - if it's ")", enable comma if the previous unfinished operand is max/min and disable number buttons
-     * - if it's a "," , enable number buttons
-     */
+
     public void processSymbol(ActionEvent e) {
         String symbol = ((Button) e.getSource()).getText();
 
-        if (symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())) {
-            stackOperationsComma.pop();
-            String currentOp = stackOperationsComma.peek();
-            System.out.println(currentOp);
-            commaButton.setDisable(currentOp == null || (!currentOp.equals(CalculatorOperationsGui.MAX.getOperation()) && !currentOp.equals(CalculatorOperationsGui.MIN.getOperation())));
+        if(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol().equals(symbol)) {
+            if(stackOperationsComma.peek() != null) {
+                processRightBracket();
+            } else return;
         }
-        if (symbol.equals(CalculatorSymbolsGui.COMMA.getSymbol()) || symbol.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol())) {
-            equationList.add(currentNumber.getText());
-        }
+        if(CalculatorSymbolsGui.LEFT_BRACKET.getSymbol().equals(symbol))
+            processLeftBracket();
+        if(CalculatorSymbolsGui.COMMA.getSymbol().equals(symbol))
+            processComa();
+
         equationList.add(symbol);
         this.setExpressionTextToList();
         cleanExpression();
+    }
+
+    /**
+     * Add the current number only if the previous character is not ")"
+     * Enable comma & disable number buttons only if the previous unfinished operand is max/min
+     * If number of ")" > "(", don't add the symbol.
+     */
+    private void processRightBracket() {
+        String lastElement = equationList.get(equationList.size()-1);
+
+        if(!lastElement.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol()))
+            equationList.add(currentNumber.getText());
+        if(stackOperationsComma.peek() != null) {
+            stackOperationsComma.pop();
+            String currentUnfinishedOp = stackOperationsComma.peek();
+            commaButton.setDisable(currentUnfinishedOp == null || (!currentUnfinishedOp.equals(CalculatorOperationsGui.MAX.getOperation()) && !currentUnfinishedOp.equals(CalculatorOperationsGui.MIN.getOperation())));
+        }
+    }
+
+    /**
+     * Add "(" only if the last element is not a number or ")"
+     */
+    private void processLeftBracket() {
+        String lastElement = equationList.isEmpty() ? null : equationList.get(equationList.size()-1);
+
+        if(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol().equals(lastElement) && Character.isDefined(lastElement.charAt(0)))
+            return;
+
+        stackOperationsComma.push(CalculatorSymbolsGui.LEFT_BRACKET.getSymbol());
+    }
+
+    /**
+     * Add the current number only if the previous character is not ")"
+     */
+    private void processComa() {
+        String lastElement = equationList.get(equationList.size()-1);
+
+        if(!lastElement.equals(CalculatorSymbolsGui.RIGHT_BRACKET.getSymbol()))
+            equationList.add(currentNumber.getText());
     }
 
     public void processChangeSign(ActionEvent e) {
@@ -252,9 +279,7 @@ public class CalculatorGUI {
      */
     public void deleteShownText(ActionEvent e) {
         String currentText = currentNumber.getText();
-        if (currentText.charAt(currentText.length() - 1) == CalculatorDigitsGui.IMAGINARY_UNIT.getSymbol().charAt(0)) {
-            enableNumberButtons();
-        }
+
         if (currentText.length() == 1) {
             currentNumber.setText(CalculatorDigitsGui.ZERO.getSymbol());
             clearButton.setText(CalculatorButtonsTextGui.CLEAR.getSymbol());
@@ -274,11 +299,16 @@ public class CalculatorGUI {
             historyList.add(0, equationText + " =" + result.toString());
             this.clean();
             currentNumber.setText(result.toString());
-            this.enableNumberButtons();
         } catch (ArithmeticException | ValidatorException exception) {
-            System.out.println(exception.getMessage());
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText(exception.getMessage());
+            currentNumber.setText(exception.getMessage());
+            a.show();
         } catch (Exception exception) {
-            System.out.println("You mathematical expression is incorrect! Please check it again.");
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Incorrect expression!");
+            currentNumber.setText(exception.getMessage());
+            a.show();
         }
     }
 
@@ -296,18 +326,6 @@ public class CalculatorGUI {
         if (CalculatorOperationsGui.isOperation(lastElement)) {
             equationList.add(currentNumber.getText());
             this.setExpressionTextToList();
-        }
-    }
-
-    private void disableNumberButtons() {
-        for (Button button : numberButtonsList) {
-            button.setDisable(true);
-        }
-    }
-
-    private void enableNumberButtons() {
-        for (Button button : numberButtonsList) {
-            button.setDisable(false);
         }
     }
 
@@ -380,8 +398,6 @@ public class CalculatorGUI {
         keyButtonMap.put(KeyCode.ENTER, equalButton);
         // -- symbols
         keyButtonMap.put(KeyCode.COMMA, commaButton);
-        keyButtonMap.put(KeyCode.LEFT_PARENTHESIS, leftBracketButton);
-        keyButtonMap.put(KeyCode.RIGHT_PARENTHESIS, rightBracketButton);
         keyButtonMap.put(KeyCode.DELETE, clearButton);
         keyButtonMap.put(KeyCode.BACK_SPACE, backspaceButton);
     }
@@ -391,6 +407,8 @@ public class CalculatorGUI {
         keyCombinationButtonMap.put(new KeyCharacterCombination("*", KeyCombination.SHIFT_DOWN), multiplicationButton);
         keyCombinationButtonMap.put(new KeyCharacterCombination("%", KeyCombination.SHIFT_DOWN), moduloButton);
         keyCombinationButtonMap.put(new KeyCharacterCombination("^", KeyCombination.SHIFT_DOWN), powerButton);
+        keyCombinationButtonMap.put(new KeyCharacterCombination("(", KeyCombination.SHIFT_DOWN), leftBracketButton);
+        keyCombinationButtonMap.put(new KeyCharacterCombination(")", KeyCombination.SHIFT_DOWN), rightBracketButton);
     }
 
 }
