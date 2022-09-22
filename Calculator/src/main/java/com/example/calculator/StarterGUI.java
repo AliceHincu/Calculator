@@ -2,11 +2,10 @@ package com.example.calculator;
 
 import com.example.calculator.gui.CalculatorGUI;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ public class StarterGUI extends Application {
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.onCloseRequestProperty().setValue(e -> Platform.exit());
         stage.show();
 
         // At the start, disable focus (by focusing on parent) and enable the buttons to be pressed by clicking on a key

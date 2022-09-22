@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="273.0" xmlns="http://javafx.com/javafx/18">
+   <VBox prefWidth="258.0" spacing="10.0">
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+      </padding>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shortcuts" wrappingWidth="99.73672485351562">
+         <font>
+            <Font size="20.0"/>
+         </font>
+      </Text>
+      <VBox prefHeight="94.0" prefWidth="218.0">
+         <opaqueInsets>
+            <Insets left="20.0"/>
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets left="20.0"/>
+         </VBox.margin>
+         <GridPane>
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="258.0">
+               <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="38.0" text="ln"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F1"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="70.0" GridPane.rowIndex="1">
+               <Button minWidth="38.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="38.0"
+                       text="exp"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F2"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="70.0" GridPane.rowIndex="2">
+               <Button minWidth="38.0" mnemonicParsing="false" text="sqrt"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F3"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="1">
+               <Button minWidth="38.0" mnemonicParsing="false" text="max"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F4"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="1"
+                  GridPane.rowIndex="1">
+               <Button minWidth="38.0" mnemonicParsing="false" text="min"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F5"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="1"
+                  GridPane.rowIndex="2">
+               <Button minWidth="38.0" mnemonicParsing="false" text="+/-"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text=" - F6"
+                     textAlignment="CENTER" wrappingWidth="42.727752685546875">
+                  <font>
+                     <Font name="Consolas" size="14.0"/>
+                  </font>
+               </Text>
+            </HBox>
+         </GridPane>
+      </VBox>
+      <Text layoutX="20.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Help"
+            wrappingWidth="99.73672485351562">
+         <font>
+            <Font size="20.0"/>
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0"
+            text="This is a calculator with operations for complex numbers. Github repo can be found here:"
+            wrappingWidth="217.751953125">
+         <VBox.margin>
+            <Insets left="15.0"/>
+         </VBox.margin>
+      </Text>
+      <Hyperlink text="https://github.com/AliceHincu/Calculator">
+         <VBox.margin>
+            <Insets left="10.0"/>
+         </VBox.margin>
+      </Hyperlink>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please be aware of the following rules:"
+            wrappingWidth="216.9820556640625">
+         <VBox.margin>
+            <Insets left="15.0"/>
+         </VBox.margin>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0"
+            text=" 1. The first TextField is editable for either copy-pasting an expression or correcting a mistake"
+            wrappingWidth="212.77264404296875">
+         <VBox.margin>
+            <Insets left="20.0"/>
+         </VBox.margin>
+      </Text>
+      <Text layoutX="40.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0"
+            text="2. The symbol '.' is used for decimal numbers" wrappingWidth="212.77264404296875">
+         <VBox.margin>
+            <Insets left="20.0"/>
+         </VBox.margin>
+      </Text>
+      <Text layoutX="40.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0"
+            text="3. The symbol ',' is used for max/min operations" wrappingWidth="212.77264404296875">
+         <VBox.margin>
+            <Insets left="20.0"/>
+         </VBox.margin>
+      </Text>
+   </VBox>
+</ScrollPane>
