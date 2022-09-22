@@ -32,7 +32,7 @@ The calculator takes the input (which is the mathematical expression) from the u
 ## Evaluation of RPN
 The way each operation is implemented can be found in the `Calculations` class. Every number is perceived as a `ComplexNumber` and the operations are written for complex numbers. Decimal numbers are also accepted (or both at the same time).
 * Operators are saved in Binary/UnaryOperatorEnum, where each operator is associated a sign, an operation from `Calculations` and a regex form for the first mentioned convertor.
-* `CalculatorService` calculates the [postfix expression](https://www.tutorialspoint.com/what-is-postfix-notation#:~:text=In%20postfix%20notation%2C%20the%20operator,%2B%20c)%20into%20Postfix%20form.&text=Example2%20%E2%88%92%20Convert%20a%20%2B%20(b,c)%20is%20in%20Postfix%20form.&text=Here%20%E2%8A%9D%20represents%20the%20unary%20minus%20operator.)
+* `CalculatorService` calculates the [postfix expression](https://www.tutorialspoint.com/what-is-postfix-notation#:~:text=In%20postfix%20notation%2C%20the%20operator,%2B%20c)
 
 # Installation and Libraries
 - [Java](https://phoenixnap.com/kb/install-java-windows)
