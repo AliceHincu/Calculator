@@ -7,6 +7,7 @@ A calculator made in java using __Reverse Polish Notation__ (Shunting yard algor
   * [Reverse Polish Notation](#reverse-polish-notation)
   * [Evaluation of RPN](#evaluation-of-rpn)
 * [Installation & Libraries](#installation-and-libraries)
+* [Execute JAR](#execute-jar)
 
 # Demo
 https://user-images.githubusercontent.com/53339016/191843600-022d52fa-c0a9-42a1-9c82-be7f41e4b66a.mp4
@@ -39,3 +40,6 @@ The way each operation is implemented can be found in the `Calculations` class. 
 - [JavaFX](https://www.youtube.com/watch?v=Ope4icw6bVk)
 - [Scene Builder](https://www.youtube.com/watch?v=-Obxf6NjnbQ&t=76s)
 - [How to export JAR](https://www.youtube.com/watch?v=EyYb0GmtEX4)
+
+# Execute JAR
+`<path_to_java> -jar <path_to_project>\Calculator\Calculator\target\Calculator-1.0-SNAPSHOT-shaded.jar`
