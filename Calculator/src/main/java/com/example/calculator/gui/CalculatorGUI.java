@@ -388,11 +388,15 @@ public class CalculatorGUI {
                     .filter(entry -> entry.getKey().match(event))
                     .findFirst();
             if (optional.isPresent()) {
-                optional.get().getValue().fire();
+                Button button = optional.get().getValue();
+                button.fire();
+                button.getParent().requestFocus();
+
             } else {
                 Button button = keyButtonMap.get(event.getCode());
                 if (button != null) {
                     button.fire();
+                    button.getParent().requestFocus();
                 }
             }
         }
